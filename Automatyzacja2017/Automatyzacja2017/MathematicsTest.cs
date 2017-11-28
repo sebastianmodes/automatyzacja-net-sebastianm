@@ -1,9 +1,22 @@
-﻿using Xunit;
+﻿using System;
+using Xunit;
 
 namespace Automatyzacja2017
 {
     public class MathematicsTest
     {
+        [Theory]
+        [InlineData(10,11,21)]
+        [InlineData(0, 0, 0)]
+        public void TheoryExample(double x, double y, double expected)
+        {
+            var math = new Mathematics();
+
+            var result = math.Add(x, y);
+
+            Assert.Equal(expected, result);
+        }
+
         [Fact]
         public void Add_returns_sum_of_given_values()
         {
@@ -93,6 +106,7 @@ namespace Automatyzacja2017
 
             //assert
             Assert.Equal(0, result);
+            //Assert.Throws<DivideByZeroException>(() => math.Divide(7, 0));
         }
 
         [Fact]

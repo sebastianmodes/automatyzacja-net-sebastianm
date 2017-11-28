@@ -30,6 +30,20 @@ namespace Automatyzacja2017
                 Console.WriteLine("Nie można dzielić przez zero");
                 return 0;
             }
+
+            //if (y == 0) throw new DivideByZeroException();
+            else
+                return x / y;
+        }
+        public double Divide2(double x, double y)
+        {
+            if (y == 0)
+            {
+                Console.WriteLine("Nie można dzielić przez zero");
+                return 0;
+            }
+
+            //if (y == 0) throw new DivideByZeroException();
             else
                 return x / y;
         }
