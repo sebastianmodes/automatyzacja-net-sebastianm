@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Automatyzacja2017
 {
-    public class Matematyka
+    public class Mathematics
     {
         public double Add(double x, double y)
         {
