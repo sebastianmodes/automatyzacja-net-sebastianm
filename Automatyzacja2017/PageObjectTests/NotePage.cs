@@ -15,9 +15,11 @@ namespace PageObjectTests
             email.Click();
             email.SendKeys(testData.Mail);
 
-            var nameLabel = Browser.FindByXpath("//label[@for='author']");
-            nameLabel.First().Click();
-            nameLabel.First().SendKeys(testData.User);
+            var nameLabel = Browser.FindByXpath("//label[@for='author']").First();
+            nameLabel.Click();
+            nameLabel.SendKeys(testData.User);
+
+            //Browser.WaitForInvisible(nameLabel);
 
             var name = Browser.FindElementById("author");
             name.Click();

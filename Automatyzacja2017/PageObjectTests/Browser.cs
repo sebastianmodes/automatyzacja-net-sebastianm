@@ -30,6 +30,11 @@ namespace PageObjectTests
             driver.Manage().Window.Maximize();
         }
 
+        internal static void WaitForInvisible(By by)
+        {
+            new WebDriverWait(driver, TimeSpan);
+        }
+
         internal static void Close()
         {
             driver.Quit();
