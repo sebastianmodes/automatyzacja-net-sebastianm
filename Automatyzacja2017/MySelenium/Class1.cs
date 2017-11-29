@@ -10,16 +10,17 @@ namespace SeleniumTests
 {
     public class Example : IDisposable
     {
+        private const string SearchTextBox = "lst-ib";
+        private const string Google = "https://google.pl";
+
         private IWebDriver driver;
         private StringBuilder verificationErrors;
-        private string baseURL ="https://google.pl";
         private bool acceptNextAlert = true;
 
         public Example()
         {
             driver = new ChromeDriver();
-            driver.Manage().Window.Maximize();
-            baseURL = "https://www.google.pl/";
+            driver.Manage().Window.Maximize();            
             verificationErrors = new StringBuilder();
         }
 
@@ -28,10 +29,12 @@ namespace SeleniumTests
         [Fact]
         public void TheExampleTest()
         {
-            driver.Navigate().GoToUrl(baseURL);
-            driver.FindElement(By.Id("lst-ib")).Clear();
-            driver.FindElement(By.Id("lst-ib")).SendKeys("codesprinters");
-            driver.FindElement(By.Id("lst-ib")).Submit();
+            GoToGoogle();
+            IWebElement searchBox = GetSearchBox();
+
+            searchBox.Clear();
+            searchBox.SendKeys("codesprinters");
+            searchBox.Submit();
             driver.FindElement(By.LinkText("Code Sprinters -")).Click();
             // ERROR: Caught exception [ERROR: Unsupported command [selectWindow | name=@color | ]]
             Assert.Equal("Code Sprinters -", driver.Title);
@@ -53,8 +56,19 @@ namespace SeleniumTests
 
             //ver1
             Assert.Contains("WIEDZA NA PIERWSZYM MIEJSCU", driver.PageSource);
-            
+
         }
+
+        private IWebElement GetSearchBox()
+        {
+            return driver.FindElement(By.Id(SearchTextBox));
+        }
+
+        private void GoToGoogle()
+        {
+            driver.Navigate().GoToUrl(Google);
+        }
+
         protected void waitForElementPresent(By by, int seconds)
         {
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(seconds));
