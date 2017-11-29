@@ -12,10 +12,15 @@ namespace SeleniumTests
     {
         private const string SearchTextBox = "lst-ib";
         private const string Google = "https://google.pl";
+        private const string PageTitle = "Code Sprinters -";
+        private const string TextToSearch = "codesprinters";
+        private const string SearchLinkText = "Poznaj nasze podejście";
+        private const string CookiePopUpAccept = "Akceptuję";
+        private const string AssertTextIsPresent = "WIEDZA NA PIERWSZYM MIEJSCU";
 
         private IWebDriver driver;
         private StringBuilder verificationErrors;
-        private bool acceptNextAlert = true;
+        //private bool acceptNextAlert = true;
 
         public Example()
         {
@@ -30,33 +35,51 @@ namespace SeleniumTests
         public void TheExampleTest()
         {
             GoToGoogle();
-            IWebElement searchBox = GetSearchBox();
+            Search(TextToSearch);
+            GoToSearchResultByPageTitle(PageTitle);                 
+            AcceptCookiePopup(CookiePopUpAccept);
+            OpenNextPage(SearchLinkText);
+            AssertPageContains(AssertTextIsPresent);
 
-            searchBox.Clear();
-            searchBox.SendKeys("codesprinters");
-            searchBox.Submit();
-            driver.FindElement(By.LinkText("Code Sprinters -")).Click();
-            // ERROR: Caught exception [ERROR: Unsupported command [selectWindow | name=@color | ]]
-            Assert.Equal("Code Sprinters -", driver.Title);
+        }
 
-            var element = driver.FindElement(By.PartialLinkText("Poznaj nasze podejście"));
-            Assert.NotNull(element);
+        private void AssertPageContains(string SearchedText)
+        {
+            Assert.Contains(SearchedText, driver.PageSource);
+        }
 
-            var elements = driver.FindElements(By.LinkText("Poznaj nasze podejście"));
-            Assert.Single(elements);
+        private void OpenNextPage(string LinkText)
+        {
+            Assert.Single(GetElementsByLinkText(LinkText));
+            waitForElementPresent(By.LinkText(LinkText), 5);
+            driver.FindElement(By.LinkText(LinkText)).Click();
+        }
 
-            driver.FindElement(By.LinkText("Akceptuję")).Click();
+        private void AcceptCookiePopup(string AcceptLinkText)
+        {
+            driver.FindElement(By.LinkText(AcceptLinkText)).Click();
 
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(11));
-            wait.Until(ExpectedConditions.InvisibilityOfElementWithText(By.LinkText("Akceptuję"), "Akceptuję"));
+            wait.Until(ExpectedConditions.InvisibilityOfElementWithText(By.LinkText(AcceptLinkText), AcceptLinkText));
+        }
 
-            waitForElementPresent(By.LinkText("Poznaj nasze podejście"), 5);
+        private System.Collections.ObjectModel.ReadOnlyCollection<IWebElement> GetElementsByLinkText(string SearchLinkText)
+        {
+            return driver.FindElements(By.LinkText(SearchLinkText));
+        }
 
-            driver.FindElement(By.LinkText("Poznaj nasze podejście")).Click();
+        private void Search(string query)
+        {
+            IWebElement searchBox = GetSearchBox();
+            searchBox.Clear();
+            searchBox.SendKeys(query);
+            searchBox.Submit();
+        }
 
-            //ver1
-            Assert.Contains("WIEDZA NA PIERWSZYM MIEJSCU", driver.PageSource);
-
+        private void GoToSearchResultByPageTitle(string title)
+        {
+            driver.FindElement(By.LinkText(title)).Click();
+            Assert.Equal(PageTitle, driver.Title);
         }
 
         private IWebElement GetSearchBox()
