@@ -9,6 +9,14 @@ namespace PageObjectTests
         public void CanAddCommentToTheBlogNote()
         {
             MainPage.GoTo();
+            MainPage.OpenFirstNote();
+            NotePage.AddComment(new Comment
+            {
+                Text = "Lorem ipsum dolor sit",
+                Mail = "test@test.com",
+                User = "białko"
+            });
+            
       
             //wejdź na strone bloga
             //otwórz pierwszą notkę
