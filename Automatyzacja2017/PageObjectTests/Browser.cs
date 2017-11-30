@@ -1,5 +1,6 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Firefox;
 using System;
 using System.Collections.ObjectModel;
 
@@ -16,7 +17,7 @@ namespace PageObjectTests
 
         static Browser()
         {
-            driver = new ChromeDriver();
+            driver = new FirefoxDriver();
         }
 
         internal static ReadOnlyCollection<IWebElement> FindByXpath(string xpath)
@@ -28,12 +29,20 @@ namespace PageObjectTests
         {
             driver.Navigate().GoToUrl(url);
             driver.Manage().Window.Maximize();
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+        }
+        
+        internal static string ReturnPageSource()
+        {
+            string pagesource = driver.PageSource;
+            return pagesource;
         }
 
-        internal static void WaitForInvisible(By by)
-        {
-            new WebDriverWait(driver, TimeSpan);
-        }
+        
+        //internal static void WaitForInvisible(By by)
+        //{
+        //    new WebDriverWait(driver, TimeSpan);
+        //}
 
         internal static void Close()
         {
