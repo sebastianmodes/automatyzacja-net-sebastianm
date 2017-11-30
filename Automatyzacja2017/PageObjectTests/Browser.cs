@@ -16,7 +16,7 @@ namespace PageObjectTests
             return driver.FindElement(By.Id(id));
         }
 
-        static Browser()
+        internal static void  Initialize()
         {
             driver = new FirefoxDriver();
         }

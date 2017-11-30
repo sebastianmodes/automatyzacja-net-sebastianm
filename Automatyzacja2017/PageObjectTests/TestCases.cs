@@ -5,6 +5,11 @@ namespace PageObjectTests
 {
     public class TestCases : IDisposable
     {
+        public TestCases()
+        {
+            Browser.Initialize();
+        }
+
         [Fact]
         public void CanAddCommentToTheBlogNote()
         {
